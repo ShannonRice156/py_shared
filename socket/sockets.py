@@ -1,12 +1,10 @@
 import socket
 from abc import ABC, abstractmethod
+from socket_info import info
 
 class SocketItem(ABC):
-    def __init__(self, HOST, PORT, FAMILY: socket.AddressFamily, TYPE: socket.SocketKind) -> None:
-        self.HOST = HOST
-        self.PORT = PORT
-        self.FAMILY = FAMILY
-        self.TYPE = TYPE
+    def __init__(self, socket_information: info) -> None:
+        self.info = socket_information
         self.encoding = "utf-8"
         self._socket = None
     
@@ -29,7 +27,7 @@ class SocketItem(ABC):
     @property
     def socket(self) -> socket:
         if self._socket is None:
-            self.socket = socket.socket(self.FAMILY, self.TYPE)
+            self.socket = socket.socket(self.info.family, self.info.type)
             self.connect_to_socket()
         return self._socket
     
